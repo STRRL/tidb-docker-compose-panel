@@ -1,7 +1,6 @@
 package com.github.strrl.panel.core.cli;
 
-import com.github.strrl.panel.core.exception.CliException;
-import com.github.strrl.panel.core.util.ProcessReactiveOutputUtil;
+import com.github.strrl.panel.core.util.ProcessReactiveUtil;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,9 +53,8 @@ public class DockerCompose {
    * Call {@code docker-compose version}
    *
    * @return
-   * @throws CliException
    */
-  public Mono<String> version() throws CliException {
+  public Mono<String> version() {
     return this.executeCommand("docker-compose", "version");
   }
 
@@ -65,9 +63,8 @@ public class DockerCompose {
    *
    * @param composeFile
    * @return
-   * @throws CliException
    */
-  public Flux<String> up(Path composeFile) throws CliException {
+  public Flux<String> up(Path composeFile) {
     return this.executeCommandReactive(
         "docker-compose", "up", "-d", "-f", this.composeFilePathToString(composeFile));
   }
@@ -77,9 +74,8 @@ public class DockerCompose {
    *
    * @param composeFile
    * @return
-   * @throws CliException
    */
-  public Mono<String> ps(Path composeFile) throws CliException {
+  public Mono<String> ps(Path composeFile) {
     return this.executeCommand(
         "docker-compose", "ps", "-f", this.composeFilePathToString(composeFile));
   }
@@ -89,9 +85,8 @@ public class DockerCompose {
    *
    * @param composeFile
    * @return
-   * @throws CliException
    */
-  public Mono<String> config(Path composeFile) throws CliException {
+  public Mono<String> config(Path composeFile) {
     return this.executeCommand(
         "docker-compose", "config", "-f", this.composeFilePathToString(composeFile));
   }
@@ -100,25 +95,11 @@ public class DockerCompose {
     return composeFile.toAbsolutePath().toString();
   }
 
-  private Mono<String> executeCommand(String... commands) throws CliException {
-    ProcessBuilder builder = new ProcessBuilder(commands).redirectErrorStream(true);
-    Process process;
-    try {
-      process = builder.start();
-    } catch (IOException e) {
-      throw new IllegalStateException("Can not execute docker-compose up.", e);
-    }
-    return ProcessReactiveOutputUtil.getOutput(process);
+  private Mono<String> executeCommand(String... commands) {
+    return ProcessReactiveUtil.getOutput(ProcessReactiveUtil.run(commands));
   }
 
-  private Flux<String> executeCommandReactive(String... commands) throws CliException {
-    ProcessBuilder builder = new ProcessBuilder(commands).redirectErrorStream(true);
-    Process process;
-    try {
-      process = builder.start();
-    } catch (IOException e) {
-      throw new IllegalStateException("Can not execute docker-compose up.", e);
-    }
-    return ProcessReactiveOutputUtil.getOutputReactive(process);
+  private Flux<String> executeCommandReactive(String... commands) {
+    return ProcessReactiveUtil.getOutputReactive(ProcessReactiveUtil.run(commands));
   }
 }
