@@ -16,6 +16,8 @@
         <reactor-bom.version>Bismuth-RELEASE</reactor-bom.version>
         <guava.version>28.0-jre</guava.version>
         <jinjava.version>2.5.2</jinjava.version>
+        <junit.version>4.12</junit.version>
+        <slf4j-api.version>1.7.28</slf4j-api.version>
     </properties>
     <artifactId>tidb-docker-compose-panel-parent</artifactId>
     <groupId>com.github.strrl</groupId>
@@ -45,6 +47,23 @@
                 <groupId>com.hubspot.jinjava</groupId>
                 <artifactId>jinjava</artifactId>
                 <version>${jinjava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j-api.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
