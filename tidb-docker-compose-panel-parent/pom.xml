@@ -13,12 +13,13 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <lombok.version>1.18.8</lombok.version>
-        <reactor-bom.version>Bismuth-RELEASE</reactor-bom.version>
+        <reactor-bom.version>Californium-SR10</reactor-bom.version>
         <guava.version>28.0-jre</guava.version>
         <jinjava.version>2.5.2</jinjava.version>
         <junit.version>4.12</junit.version>
         <slf4j-api.version>1.7.28</slf4j-api.version>
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <spring-boot-dependencies.version>2.1.7.RELEASE</spring-boot-dependencies.version>
     </properties>
     <artifactId>tidb-docker-compose-panel-parent</artifactId>
     <groupId>com.github.strrl</groupId>
@@ -36,6 +37,13 @@
                 <groupId>io.projectreactor</groupId>
                 <artifactId>reactor-bom</artifactId>
                 <version>${reactor-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
