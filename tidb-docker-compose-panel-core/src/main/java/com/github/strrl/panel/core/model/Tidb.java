@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 /**
  * @author strrl
@@ -11,8 +12,15 @@ import javax.annotation.Nonnull;
  */
 @Data
 @AllArgsConstructor
-public class Tidb {
+public class Tidb implements Serializable {
+  private static final long serialVersionUID = -8728558881095480893L;
   @Nonnull private String name;
   @Nonnull private String version;
   @Nonnull private Boolean exposed;
+
+  public Tidb() {
+    this.name = "";
+    this.name = "";
+    this.exposed = false;
+  }
 }

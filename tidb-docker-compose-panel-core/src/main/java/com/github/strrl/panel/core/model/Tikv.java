@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 /**
  * @author strrl
@@ -11,7 +12,13 @@ import javax.annotation.Nonnull;
  */
 @Data
 @AllArgsConstructor
-public class Tikv {
+public class Tikv implements Serializable {
+  private static final long serialVersionUID = 1683103325321583036L;
   @Nonnull private String name;
   @Nonnull private String version;
+
+  public Tikv() {
+    this.name = "";
+    this.version = "";
+  }
 }

@@ -59,25 +59,31 @@ public class DockerCompose {
   }
 
   /**
-   * Call {@code docker-compose up -d -f docker-compose.yml}. Return output with reactive style.
+   * Call {@code docker-compose -f docker-compose.yml up -d --remove-orphans}. Return output with
+   * reactive style.
    *
    * @param composeFile
    * @return
    */
   public Flux<String> up(Path composeFile) {
     return this.executeCommandReactive(
-        "docker-compose", "up", "-d", "-f", this.composeFilePathToString(composeFile));
+        "docker-compose",
+        "-f",
+        this.composeFilePathToString(composeFile),
+        "up",
+        "-d",
+        "--remove-orphans");
   }
 
   /**
-   * Call {@code docker-compose ps -f docker-compose.yml}
+   * Call {@code docker-compose -f docker-compose.yml ps}
    *
    * @param composeFile
    * @return
    */
   public Mono<String> ps(Path composeFile) {
     return this.executeCommand(
-        "docker-compose", "ps", "-f", this.composeFilePathToString(composeFile));
+        "docker-compose", "-f", this.composeFilePathToString(composeFile), "ps");
   }
 
   /**
@@ -88,7 +94,7 @@ public class DockerCompose {
    */
   public Mono<String> config(Path composeFile) {
     return this.executeCommand(
-        "docker-compose", "config", "-f", this.composeFilePathToString(composeFile));
+        "docker-compose", "-f", this.composeFilePathToString(composeFile), "config");
   }
 
   private String composeFilePathToString(Path composeFile) {
