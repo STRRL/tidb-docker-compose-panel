@@ -48,7 +48,7 @@ public class ProcessReactiveUtil {
           new ThreadFactoryBuilder()
               .setUncaughtExceptionHandler(
                   (t, e) -> log.warn("Thread {} throw uncaught exception.", t, e))
-              .setNameFormat("relay-executor-%d")
+              .setNameFormat("process-startup-executor-%d")
               .build());
 
   /**
