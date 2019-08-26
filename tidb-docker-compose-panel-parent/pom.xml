@@ -18,6 +18,7 @@
         <jinjava.version>2.5.2</jinjava.version>
         <junit.version>4.12</junit.version>
         <slf4j-api.version>1.7.28</slf4j-api.version>
+        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
     </properties>
     <artifactId>tidb-docker-compose-panel-parent</artifactId>
     <groupId>com.github.strrl</groupId>
@@ -67,4 +68,22 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
