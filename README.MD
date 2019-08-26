@@ -10,10 +10,10 @@ See [tidb-docker-compose](https://github.com/pingcap/tidb-docker-compose) to lea
 
 ## Todo List
 
-- [ ] Core concepts.
-- [ ] Single cluster.
+- [x] Core concepts.
+- [x] Single cluster.
 - [ ] docker-compose.yml syntax check
-- [ ] Multi cluster.
+- [x] Multi cluster.
 - [ ] Web application.
 - [ ] Fetch available image versions from docker hub.
 - [ ] Run in docker.
