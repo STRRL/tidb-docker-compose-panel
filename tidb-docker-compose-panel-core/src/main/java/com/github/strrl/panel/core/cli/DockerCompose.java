@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class DockerCompose {
+  private static final String DOCKER_COMPOSE = "docker-compose";
   private static DockerCompose INSTANCE;
 
   private DockerCompose() {}
@@ -24,7 +25,7 @@ public class DockerCompose {
   public static DockerCompose getInstance() {
     if (INSTANCE == null) {
       synchronized (DockerCompose.class) {
-        ProcessBuilder processBuilder = new ProcessBuilder("docker-compose");
+        ProcessBuilder processBuilder = new ProcessBuilder(DOCKER_COMPOSE);
         Process process;
         try {
           process = processBuilder.start();
@@ -55,7 +56,7 @@ public class DockerCompose {
    * @return
    */
   public Mono<String> version() {
-    return this.executeCommand("docker-compose", "version");
+    return this.executeCommand(DOCKER_COMPOSE, "version");
   }
 
   /**
@@ -67,7 +68,7 @@ public class DockerCompose {
    */
   public Flux<String> up(Path composeFile) {
     return this.executeCommandReactive(
-        "docker-compose",
+        DOCKER_COMPOSE,
         "-f",
         this.composeFilePathToString(composeFile),
         "up",
@@ -83,7 +84,7 @@ public class DockerCompose {
    */
   public Mono<String> ps(Path composeFile) {
     return this.executeCommand(
-        "docker-compose", "-f", this.composeFilePathToString(composeFile), "ps");
+        DOCKER_COMPOSE, "-f", this.composeFilePathToString(composeFile), "ps");
   }
 
   /**
@@ -94,7 +95,7 @@ public class DockerCompose {
    */
   public Mono<String> config(Path composeFile) {
     return this.executeCommand(
-        "docker-compose", "-f", this.composeFilePathToString(composeFile), "config");
+        DOCKER_COMPOSE, "-f", this.composeFilePathToString(composeFile), "config");
   }
 
   private String composeFilePathToString(Path composeFile) {

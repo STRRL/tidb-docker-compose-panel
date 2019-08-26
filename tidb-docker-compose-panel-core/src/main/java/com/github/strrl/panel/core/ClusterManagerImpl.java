@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 @Slf4j
 public class ClusterManagerImpl implements ClusterManager {
-  public static final String CLUSTER_JSON = "cluster.json";
+  private static final String CLUSTER_JSON = "cluster.json";
   private static final String CONFIG_FILE_LIST = "config.lst";
   private static final String DOCKER_COMPOSE_YML = "docker-compose.yml";
   @Nonnull private final DockerCompose dockerCompose;
@@ -46,7 +46,7 @@ public class ClusterManagerImpl implements ClusterManager {
       log.info("A cluster with name {} already startup, it will be override.", cluster.getName());
       try {
         Files.deleteIfExists(
-            Paths.get(this.getClusterDirectory(cluster).toString(), "docker-compose.yml"));
+            Paths.get(this.getClusterDirectory(cluster).toString(), DOCKER_COMPOSE_YML));
       } catch (IOException e) {
         throw new IllegalStateException("Can not remove old docker-compose.yml");
       }
