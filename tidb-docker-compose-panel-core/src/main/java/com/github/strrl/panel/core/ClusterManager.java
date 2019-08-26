@@ -1,7 +1,6 @@
 package com.github.strrl.panel.core;
 
 import com.github.strrl.panel.core.model.Cluster;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -19,12 +18,12 @@ public interface ClusterManager {
    * @param cluster Cluster description.
    * @return
    */
-  Mono<Cluster> startup(Cluster cluster);
+  Cluster startup(Cluster cluster);
 
   /**
    * Get all clusters created with this ClusterManager.
    *
    * @return
    */
-  Mono<List<Cluster>> getAllClusters();
+  List<Cluster> getAllClusters();
 }
