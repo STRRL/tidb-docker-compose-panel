@@ -1,9 +1,6 @@
 package com.github.strrl.panel.core.render;
 
-import com.github.strrl.panel.core.model.Cluster;
-import com.github.strrl.panel.core.model.Pd;
-import com.github.strrl.panel.core.model.Tidb;
-import com.github.strrl.panel.core.model.Tikv;
+import com.github.strrl.panel.core.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,9 +16,12 @@ public class ClusterDockerComposeRendererTest {
     cluster.setPds(
         Arrays.asList(new Pd("pdA", "latest"), new Pd("pdB", "latest"), new Pd("pdC", "latest")));
     cluster.setTidbs(
-        Arrays.asList(new Tidb("tidbA", "latest", true), new Tidb("tidbB", "latest", false)));
+        Arrays.asList(
+            new Tidb("tidbA", "latest", true, 4000, 10080),
+            new Tidb("tidbB", "latest", true, 4001, 10081)));
     cluster.setTikvs(Arrays.asList(new Tikv("tikvA", "latest"), new Tikv("tikvB", "latest")));
-
+    cluster.setGrafana(new Grafana(13000));
+    cluster.setPrometheus(new Prometheus(19090));
     ClusterDockerComposeRenderer renderer = new ClusterDockerComposeRenderer(cluster);
     String context = renderer.render();
 
@@ -142,8 +142,8 @@ public class ClusterDockerComposeRendererTest {
             + "    image: pingcap/tidb:latest\n"
             + "\n"
             + "    ports:\n"
-            + "      - \"4000\"\n"
-            + "      - \"10080\"\n"
+            + "      - \"4000:4000\"\n"
+            + "      - \"10080:10080\"\n"
             + "\n"
             + "    volumes:\n"
             + "      - ./config/tidb.toml:/tidb.toml:ro\n"
@@ -165,8 +165,8 @@ public class ClusterDockerComposeRendererTest {
             + "    image: pingcap/tidb:latest\n"
             + "\n"
             + "    ports:\n"
-            + "      - \"4000\"\n"
-            + "      - \"10080\"\n"
+            + "      - \"4001:4000\"\n"
+            + "      - \"10081:10080\"\n"
             + "\n"
             + "    volumes:\n"
             + "      - ./config/tidb.toml:/tidb.toml:ro\n"
@@ -184,47 +184,6 @@ public class ClusterDockerComposeRendererTest {
             + "\n"
             + "    restart: on-failure\n"
             + "\n"
-            + "  tispark-master:\n"
-            + "    image: pingcap/tispark:latest\n"
-            + "    command:\n"
-            + "      - /opt/spark/sbin/start-master.sh\n"
-            + "    volumes:\n"
-            + "      - ./config/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf:ro\n"
-            + "    environment:\n"
-            + "      SPARK_MASTER_PORT: 7077\n"
-            + "      SPARK_MASTER_WEBUI_PORT: 8080\n"
-            + "    ports:\n"
-            + "      - \"7077:7077\"\n"
-            + "      - \"8080:8080\"\n"
-            + "    depends_on:\n"
-            + "\n"
-            + "      - \"tikvA\"\n"
-            + "\n"
-            + "      - \"tikvB\"\n"
-            + "\n"
-            + "    restart: on-failure\n"
-            + "  tispark-slave0:\n"
-            + "    image: pingcap/tispark:latest\n"
-            + "    command:\n"
-            + "      - /opt/spark/sbin/start-slave.sh\n"
-            + "      - spark://tispark-master:7077\n"
-            + "    volumes:\n"
-            + "      - ./config/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf:ro\n"
-            + "    environment:\n"
-            + "      SPARK_WORKER_WEBUI_PORT: 38081\n"
-            + "    ports:\n"
-            + "      - \"38081:38081\"\n"
-            + "    depends_on:\n"
-            + "      - tispark-master\n"
-            + "    restart: on-failure\n"
-            + "\n"
-            + "  tidb-vision:\n"
-            + "    image: pingcap/tidb-vision:latest\n"
-            + "    environment:\n"
-            + "      PD_ENDPOINT: pdA:2379\n"
-            + "    ports:\n"
-            + "      - \"8010:8010\"\n"
-            + "    restart: on-failure\n"
             + "\n"
             + "  # monitors\n"
             + "  pushgateway:\n"
@@ -240,7 +199,7 @@ public class ClusterDockerComposeRendererTest {
             + "      - --storage.tsdb.path=/data/prometheus\n"
             + "      - --config.file=/etc/prometheus/prometheus.yml\n"
             + "    ports:\n"
-            + "      - \"9090:9090\"\n"
+            + "      - \"19090:9090\"\n"
             + "    volumes:\n"
             + "      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro\n"
             + "      - ./config/pd.rules.yml:/etc/prometheus/pd.rules.yml:ro\n"
@@ -260,7 +219,7 @@ public class ClusterDockerComposeRendererTest {
             + "      - ./config/dashboards:/tmp/dashboards\n"
             + "      - ./data/grafana:/var/lib/grafana\n"
             + "    ports:\n"
-            + "      - \"3000:3000\"\n"
+            + "      - \"13000:3000\"\n"
             + "    restart: on-failure\n";
     Assert.assertEquals(excepted, context);
   }

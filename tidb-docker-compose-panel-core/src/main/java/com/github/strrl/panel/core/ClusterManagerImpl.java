@@ -8,6 +8,7 @@ import com.github.strrl.panel.core.render.ClusterDockerComposeRenderer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 
 import javax.annotation.Nonnull;
 import java.io.*;
@@ -15,9 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author strrl
@@ -55,7 +55,10 @@ public class ClusterManagerImpl implements ClusterManager {
     this.copyConfigFiles(cluster);
     this.dockerCompose
         .up(this.writeDockerComposeYamlContext(cluster))
-        .subscribe(lineOfLog -> log.info("{}", lineOfLog));
+        .subscribe(
+            lineOfLog -> log.info("{}", lineOfLog),
+            throwable -> log.warn("Cluster {} startup failed.", cluster.getName()),
+            () -> log.info("Cluster {} start up succeed.", cluster.getName()));
     this.saveCluster(cluster);
     return cluster;
   }
@@ -63,9 +66,53 @@ public class ClusterManagerImpl implements ClusterManager {
   @Nonnull
   @Override
   public List<Cluster> getAllClusters() {
-    // TODO: 2019/8/26 Implement me!
-    throw new UnsupportedOperationException(
-        "Not implemented method: ClusterManagerImpl#getAllClusters");
+    if (this.workspace.toFile().exists()) {
+      File[] files = this.workspace.toFile().listFiles(File::isDirectory);
+      if (files == null) {
+        return Collections.emptyList();
+      } else {
+        return Arrays.stream(files)
+            .map(directory -> this.readCluster(directory.getName()))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toList());
+      }
+    } else {
+      return Collections.emptyList();
+    }
+  }
+
+  @Nonnull
+  @Override
+  public Cluster purge(@Nonnull Cluster cluster) {
+    return this.purgeByName(cluster.getName());
+  }
+
+  @Nonnull
+  @Override
+  public Cluster purgeByName(@Nonnull String clusterName) {
+    Optional<Cluster> clusterOptional = this.readCluster(clusterName);
+    if (clusterOptional.isPresent()) {
+      this.dockerCompose
+          .down(
+              Paths.get(
+                  this.getClusterDirectory(clusterOptional.get()).toString(), "docker-compose.yml"))
+          .subscribe(
+              lineOfLog -> log.info("{}", lineOfLog),
+              throwable -> log.warn("Cluster {} down failed.", clusterName),
+              () -> {
+                try {
+                  FileUtils.deleteDirectory(
+                      this.getClusterDirectory(clusterOptional.get()).toFile());
+                } catch (IOException e) {
+                  log.warn("Failed to remove {}.", this.getClusterDirectory(clusterOptional.get()));
+                }
+                log.info("Cluster {} down succeed.", clusterName);
+              });
+      return clusterOptional.get();
+    } else {
+      throw new IllegalStateException(String.format("Cluster %s not exist.", clusterName));
+    }
   }
 
   private Path getClusterDirectory(@Nonnull Cluster cluster) {

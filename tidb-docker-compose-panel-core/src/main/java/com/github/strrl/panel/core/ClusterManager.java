@@ -29,4 +29,22 @@ public interface ClusterManager {
    */
   @Nonnull
   List<Cluster> getAllClusters();
+
+  /**
+   * Kill a cluster and delete config file;
+   *
+   * @param cluster
+   * @return
+   */
+  @Nonnull
+  Cluster purge(@Nonnull Cluster cluster);
+
+  /**
+   * Kill a cluster and delete config file by clusterName;
+   *
+   * @param clusterName
+   * @return
+   */
+  @Nonnull
+  Cluster purgeByName(@Nonnull String clusterName);
 }
