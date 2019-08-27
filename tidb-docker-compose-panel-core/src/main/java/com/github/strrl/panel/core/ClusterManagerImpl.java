@@ -8,6 +8,7 @@ import com.github.strrl.panel.core.render.ClusterDockerComposeRenderer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 
 import javax.annotation.Nonnull;
 import java.io.*;
@@ -78,6 +79,39 @@ public class ClusterManagerImpl implements ClusterManager {
       }
     } else {
       return Collections.emptyList();
+    }
+  }
+
+  @Nonnull
+  @Override
+  public Cluster purge(@Nonnull Cluster cluster) {
+    return this.purgeByName(cluster.getName());
+  }
+
+  @Nonnull
+  @Override
+  public Cluster purgeByName(@Nonnull String clusterName) {
+    Optional<Cluster> clusterOptional = this.readCluster(clusterName);
+    if (clusterOptional.isPresent()) {
+      this.dockerCompose
+          .down(
+              Paths.get(
+                  this.getClusterDirectory(clusterOptional.get()).toString(), "docker-compose.yml"))
+          .subscribe(
+              lineOfLog -> log.info("{}", lineOfLog),
+              throwable -> log.warn("Cluster {} down failed.", clusterName),
+              () -> {
+                try {
+                  FileUtils.deleteDirectory(
+                      this.getClusterDirectory(clusterOptional.get()).toFile());
+                } catch (IOException e) {
+                  log.warn("Failed to remove {}.", this.getClusterDirectory(clusterOptional.get()));
+                }
+                log.info("Cluster {} down succeed.", clusterName);
+              });
+      return clusterOptional.get();
+    } else {
+      throw new IllegalStateException(String.format("Cluster %s not exist.", clusterName));
     }
   }
 

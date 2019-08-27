@@ -88,7 +88,7 @@ public class DockerCompose {
   }
 
   /**
-   * Call {@code docker-compose config -f docker-compose.yml}
+   * Call {@code docker-compose -f docker-compose.yml config}
    *
    * @param composeFile
    * @return
@@ -96,6 +96,16 @@ public class DockerCompose {
   public Mono<String> config(Path composeFile) {
     return this.executeCommand(
         DOCKER_COMPOSE, "-f", this.composeFilePathToString(composeFile), "config");
+  }
+
+  /**
+   * Call {@code docker-compose -f docker-compose.yml down}
+   * @param composeFile
+   * @return
+   */
+  public Flux<String> down(Path composeFile) {
+    return this.executeCommandReactive(
+        DOCKER_COMPOSE, "-f", this.composeFilePathToString(composeFile), "down");
   }
 
   private String composeFilePathToString(Path composeFile) {
