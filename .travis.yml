@@ -15,8 +15,8 @@ jobs:
     - stage: build
       script:
         - mvn clean && mvn package
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
         - if [ ! -z "$TRAVIS_TAG" ]; then
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
             docker build tidb-docker-compose-panel-web -t strrl/tidb-docker-compose-panel-web:latest -t strrl/tidb-docker-compose-panel-web:${TRAVIS_TAG};
             docker push strrl/tidb-docker-compose-panel-web:latest;
             docker push strrl/tidb-docker-compose-panel-web:${TRAVIS_TAG};
