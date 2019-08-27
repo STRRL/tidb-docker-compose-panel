@@ -4,12 +4,10 @@ import com.github.strrl.panel.core.ClusterManager;
 import com.github.strrl.panel.core.model.Cluster;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -27,5 +25,21 @@ public class ClusterController {
   public Mono<Cluster> startup(@RequestBody Cluster cluster) {
     return Mono.fromFuture(
         CompletableFuture.supplyAsync(() -> this.clusterManager.startup(cluster)));
+  }
+
+  @GetMapping
+  public Mono<List<Cluster>> getAll() {
+    return Mono.fromFuture(CompletableFuture.supplyAsync(this.clusterManager::getAllClusters));
+  }
+
+  @DeleteMapping
+  public Mono<Cluster> purge(@RequestBody Cluster cluster) {
+    return Mono.fromFuture(CompletableFuture.supplyAsync(() -> this.clusterManager.purge(cluster)));
+  }
+
+  @DeleteMapping("/{clusterName}")
+  public Mono<Cluster> purge(@PathVariable("clusterName") String clusterName) {
+    return Mono.fromFuture(
+        CompletableFuture.supplyAsync(() -> this.clusterManager.purgeByName(clusterName)));
   }
 }

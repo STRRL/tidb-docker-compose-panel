@@ -20,6 +20,7 @@
         <slf4j-api.version>1.7.28</slf4j-api.version>
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
         <spring-boot-dependencies.version>2.1.7.RELEASE</spring-boot-dependencies.version>
+        <commons-io.version>2.6</commons-io.version>
     </properties>
     <artifactId>tidb-docker-compose-panel-parent</artifactId>
     <groupId>com.github.strrl</groupId>
@@ -78,6 +79,11 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j-api.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
