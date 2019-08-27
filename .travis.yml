@@ -21,6 +21,6 @@ jobs:
           docker push strrl/tidb-docker-compose-panel-web:latest && \
           docker push strrl/tidb-docker-compose-panel-web:${TRAVIS_TAG}; \
           else \
-          docker build tidb-docker-compose-panel-web -t strrl/tidb-docker-compose-panel-web:beta \
+          docker build tidb-docker-compose-panel-web -t strrl/tidb-docker-compose-panel-web:beta &&\
           docker push strrl/tidb-docker-compose-panel-web:beta; \
           fi ;'
