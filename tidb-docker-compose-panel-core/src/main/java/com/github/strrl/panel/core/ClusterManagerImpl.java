@@ -15,9 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author strrl
@@ -55,7 +54,10 @@ public class ClusterManagerImpl implements ClusterManager {
     this.copyConfigFiles(cluster);
     this.dockerCompose
         .up(this.writeDockerComposeYamlContext(cluster))
-        .subscribe(lineOfLog -> log.info("{}", lineOfLog));
+        .subscribe(
+            lineOfLog -> log.info("{}", lineOfLog),
+            throwable -> log.warn("Cluster {} startup failed.", cluster.getName()),
+            () -> log.info("Cluster {} start up succeed.", cluster.getName()));
     this.saveCluster(cluster);
     return cluster;
   }
@@ -63,9 +65,20 @@ public class ClusterManagerImpl implements ClusterManager {
   @Nonnull
   @Override
   public List<Cluster> getAllClusters() {
-    // TODO: 2019/8/26 Implement me!
-    throw new UnsupportedOperationException(
-        "Not implemented method: ClusterManagerImpl#getAllClusters");
+    if (this.workspace.toFile().exists()) {
+      File[] files = this.workspace.toFile().listFiles(File::isDirectory);
+      if (files == null) {
+        return Collections.emptyList();
+      } else {
+        return Arrays.stream(files)
+            .map(directory -> this.readCluster(directory.getName()))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toList());
+      }
+    } else {
+      return Collections.emptyList();
+    }
   }
 
   private Path getClusterDirectory(@Nonnull Cluster cluster) {

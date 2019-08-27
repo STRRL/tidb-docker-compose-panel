@@ -17,10 +17,14 @@ public class Tidb implements Serializable {
   @Nonnull private String name;
   @Nonnull private String version;
   @Nonnull private Boolean exposed;
+  @Nonnull private Integer exposeServerPort;
+  @Nonnull private Integer exposeStatusPort;
 
   public Tidb() {
     this.name = "";
-    this.name = "";
+    this.version = "";
     this.exposed = false;
+    this.exposeServerPort = 0;
+    this.exposeStatusPort = 0;
   }
 }

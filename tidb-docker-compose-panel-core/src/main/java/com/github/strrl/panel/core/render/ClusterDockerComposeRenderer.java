@@ -37,6 +37,8 @@ public class ClusterDockerComposeRenderer implements Renderer {
     result.put("pds", this.cluster.getPds());
     result.put("tidbs", this.cluster.getTidbs());
     result.put("tikvs", this.cluster.getTikvs());
+    result.put("prometheus", this.cluster.getPrometheus());
+    result.put("grafana", this.cluster.getGrafana());
     return result;
   }
 

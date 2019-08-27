@@ -21,12 +21,16 @@ public class Cluster implements Serializable {
   @Nonnull private List<Pd> pds;
   @Nonnull private List<Tidb> tidbs;
   @Nonnull private List<Tikv> tikvs;
+  @Nonnull private Prometheus prometheus;
+  @Nonnull private Grafana grafana;
 
   public Cluster() {
     this.name = "";
     this.pds = Collections.emptyList();
     this.tidbs = Collections.emptyList();
     this.tikvs = Collections.emptyList();
+    this.prometheus = new Prometheus();
+    this.grafana = new Grafana();
   }
 
   public Cluster(@Nonnull String name) {
@@ -34,5 +38,7 @@ public class Cluster implements Serializable {
     this.pds = Collections.emptyList();
     this.tidbs = Collections.emptyList();
     this.tikvs = Collections.emptyList();
+    this.prometheus = new Prometheus();
+    this.grafana = new Grafana();
   }
 }
