@@ -1,0 +1,5 @@
+FROM strrl/openjdk8-with-dind
+WORKDIR /app
+EXPOSE 18080
+COPY ./target/tidb-docker-compose-panel-web-1.0-SNAPSHOT-exec.jar /app/tidb-docker-compose-panel-web-1.0-SNAPSHOT-exec.jar
+CMD ["java", "-jar", "-Xms1G", "-Xmx1G", "/app/tidb-docker-compose-panel-web-1.0-SNAPSHOT-exec.jar"]
