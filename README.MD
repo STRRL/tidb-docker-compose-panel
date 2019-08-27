@@ -14,7 +14,7 @@ See [tidb-docker-compose](https://github.com/pingcap/tidb-docker-compose) to lea
 - [x] Single cluster.
 - [ ] docker-compose.yml syntax check
 - [x] Multi cluster.
-- [ ] Web application.
+- [x] Web application.
 - [ ] Fetch available image versions from docker hub.
-- [ ] Run in docker.
+- [ ] Run in docker:dind.
 - [ ] docker swarm support.
