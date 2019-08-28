@@ -9,6 +9,7 @@
           :nTidb="cluster.tidbs.length"
           :nTikv="cluster.tikvs.length"
           :nPd="cluster.pds.length"
+          @purge="purgeCluster"
         />
         <cluster-card-add />
 
@@ -20,7 +21,7 @@
 <script>
 import ClusterCard from '@/components/ClusterCard';
 import ClusterCardAdd from '@/components/ClusterCardAdd';
-import { list } from '@/server';
+import { list, purge } from '@/server';
 
 export default {
   name: 'clusterTable',
@@ -39,6 +40,18 @@ export default {
         type: 'warning'
       });
     })
+  },
+  methods: {
+    purgeCluster (clusterName) {
+      purge(clusterName).then(resp => {
+        this.$message(`Cluster ${resp.data.name} will be purged.\nPlease manually refresh this page later.`);
+      }).catch(error => {
+        this.$message({
+          message: error.response.data.message,
+          type: 'warning'
+        });
+      });
+    }
   }
 }
 </script>

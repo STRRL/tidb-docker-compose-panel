@@ -9,6 +9,7 @@
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
+          @click="purge"
         >Purge</el-button>
       </div>
       <div>
@@ -31,7 +32,13 @@ export default {
   name: "clusterCard",
   data () {
     return {};
-  }, props: ["name", "nTidb", "nTikv", "nPd"]
+  },
+  props: ["name", "nTidb", "nTikv", "nPd"],
+  methods: {
+    purge () {
+      this.$emit("purge", this.name);
+    }
+  }
 }
 </script>
 
