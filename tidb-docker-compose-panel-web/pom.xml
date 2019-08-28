@@ -44,6 +44,10 @@
             <groupId>com.github.strrl</groupId>
             <artifactId>tidb-docker-compose-panel-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.strrl</groupId>
+            <artifactId>tidb-docker-compose-panel-web-ui</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -71,6 +75,31 @@
                 <configuration>
                     <executable>true</executable>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy Vue.js frontend content</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes/static</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../tidb-docker-compose-panel-web-ui/target/dist</directory>
+                                    <includes>
+                                        <include>static/</include>
+                                        <include>index.html</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
