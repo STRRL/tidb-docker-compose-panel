@@ -8,8 +8,8 @@
         <span>Cluster: {{ name }}</span>
         <el-button
           style="float: right; padding: 3px 0"
-          type="text"
           @click="purge"
+          type="danger"
         >Purge</el-button>
       </div>
       <div>

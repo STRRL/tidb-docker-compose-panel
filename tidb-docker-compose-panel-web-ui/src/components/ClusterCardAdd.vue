@@ -1,14 +1,25 @@
 <template>
   <div class="cluster-card-add-container">
     <el-card class="cluster-card-add">
-      <h1 class="center">New</h1>
+      <div
+        slot="header"
+        class="clearfix"
+      >
+        <span>Create cluster</span>
+      </div>
+      <el-button @click="create">New</el-button>
     </el-card>
   </div>
 </template>
 
 <script>
 export default {
-  name: "clusterCardAdd"
+  name: "clusterCardAdd",
+  methods: {
+    create () {
+      this.$router.push({ name: "create" });
+    }
+  }
 }
 </script>
 
