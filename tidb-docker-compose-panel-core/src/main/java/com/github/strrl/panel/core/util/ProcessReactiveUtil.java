@@ -124,7 +124,6 @@ public class ProcessReactiveUtil {
    */
   public static Mono<Process> run(String... commands) {
     ProcessBuilder builder = new ProcessBuilder(commands).redirectErrorStream(true);
-    builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
     return Mono.create(
         callback ->
             PROCESS_STARTUP_EXECUTOR.submit(
