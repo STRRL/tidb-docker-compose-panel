@@ -13,5 +13,6 @@
         <module>tidb-docker-compose-panel-core</module>
         <module>tidb-docker-compose-panel-web</module>
         <module>tidb-docker-compose-panel-cli</module>
+        <module>tidb-docker-compose-panel-web-ui</module>
     </modules>
 </project>
