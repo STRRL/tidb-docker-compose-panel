@@ -58,7 +58,7 @@ public class ClusterManagerImpl implements ClusterManager {
         .subscribe(
             lineOfLog -> log.info("{}", lineOfLog),
             throwable -> log.warn("Cluster {} startup failed.", cluster.getName()),
-            () -> log.info("Cluster {} start up succeed.", cluster.getName()));
+            () -> log.info("Cluster {} start up finished.", cluster.getName()));
     this.saveCluster(cluster);
     return cluster;
   }

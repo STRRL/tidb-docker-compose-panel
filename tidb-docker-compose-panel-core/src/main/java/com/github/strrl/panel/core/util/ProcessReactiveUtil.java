@@ -116,13 +116,15 @@ public class ProcessReactiveUtil {
         FluxSink.OverflowStrategy.BUFFER);
   }
 
-    /**
-     * Run a process in non blocking style.
-     * @param commands
-     * @return
-     */
+  /**
+   * Run a process in non blocking style.
+   *
+   * @param commands
+   * @return
+   */
   public static Mono<Process> run(String... commands) {
     ProcessBuilder builder = new ProcessBuilder(commands).redirectErrorStream(true);
+    builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
     return Mono.create(
         callback ->
             PROCESS_STARTUP_EXECUTOR.submit(
@@ -136,5 +138,10 @@ public class ProcessReactiveUtil {
                   }
                   callback.success(process);
                 }));
+  }
+
+  public static void cleanup() {
+    RELAY_EXECUTOR.shutdownNow();
+    PROCESS_STARTUP_EXECUTOR.shutdownNow();
   }
 }
