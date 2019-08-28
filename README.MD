@@ -15,8 +15,8 @@ See [tidb-docker-compose](https://github.com/pingcap/tidb-docker-compose) to lea
 - [ ] docker-compose.yml syntax check
 - [x] Multi cluster.
 - [x] Web application.
-- [ ] Cli tool.
+- [x] Cli tool.
 - [ ] Web ui.
 - [ ] Fetch available image versions from docker hub.
 - [ ] Run in docker:dind.
-- [ ] docker swarm support.
+- [ ] ~~docker swarm support.~~
