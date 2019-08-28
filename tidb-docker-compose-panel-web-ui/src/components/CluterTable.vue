@@ -22,6 +22,7 @@
 import ClusterCard from '@/components/ClusterCard';
 import ClusterCardAdd from '@/components/ClusterCardAdd';
 import { list, purge } from '@/server';
+import { setTimeout } from 'timers';
 
 export default {
   name: 'clusterTable',
@@ -42,9 +43,22 @@ export default {
     })
   },
   methods: {
+    reloadClusterList () {
+      // same as mounted
+      list().then(resp => {
+        this.clusters = resp.data;
+      }).catch(error => {
+        this.$message({
+          message: error.response.data.message,
+          type: 'warning'
+        });
+      })
+    },
     purgeCluster (clusterName) {
       purge(clusterName).then(resp => {
-        this.$message(`Cluster ${resp.data.name} will be purged.\nPlease manually refresh this page later.`);
+        this.$message(`Cluster ${resp.data.name} will be purged.`);
+        const vueThis = this;
+        setTimeout(() => { vueThis.reloadClusterList() }, 1000);
       }).catch(error => {
         this.$message({
           message: error.response.data.message,
