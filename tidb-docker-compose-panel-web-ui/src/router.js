@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Home from '@/views/Home.vue'
+import CreateCluster from '@/views/CreateCluster.vue'
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -13,6 +13,11 @@ export default new Router({
       name: 'home',
       component: Home
     },
+    {
+      path: '/create',
+      name: 'create',
+      component: CreateCluster
+    }, 
     {
       path: '/about',
       name: 'about',

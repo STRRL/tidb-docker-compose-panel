@@ -5,3 +5,6 @@ export function list () {
 export function purge (clusterName) {
     return Axios.delete(`/cluster/${clusterName}`);
 }
+export function startup (cluster) {
+    return Axios.post("/cluster", cluster);
+}
