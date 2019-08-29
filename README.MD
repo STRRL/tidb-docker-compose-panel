@@ -47,6 +47,27 @@ shell:>
 
 Then enter commands after prompt `shell:>` appear. Here are 3 commands for managing TiDB clusters: `list`, `purge`,`startup`. And also some built-in commands such as `help`, `exit`. Use `TAB` for auto-completion is supported.
 
+```text
+shell:>help
+AVAILABLE COMMANDS
+
+Built-In Commands
+        clear: Clear the shell screen.
+        exit, quit: Exit the shell.
+        help: Display help about available commands.
+        history: Display or save the history of previously run commands
+        script: Read and execute commands from a file.
+        stacktrace: Display the full stacktrace of the last error.
+
+TiDB Cluster Commands
+        list, ls: Get all cluster from workspace.
+        purge: Purge a cluster.
+        startup: Startup a cluster.
+
+
+shell:>
+```
+
 Use `startup -n my_cluster` can startup a TiDB cluster called `my_cluster` with default config: 1 TiDB instance, 3 TiKV instance, 3 PD instance, 1 Prometheus, 1 Grafana, 1 pushgateway. Should use other parameter to change instance name, expose port, tag for docker image and others.
 
 See `help startup` for more information.
@@ -116,7 +137,6 @@ Clusters:
 
 ![web-ui](https://i.imgur.com/VcXWMGK.png)
 ![web-ui-2](https://i.imgur.com/O7lTOtN.png)
-
 
 Create new cluster:
 
