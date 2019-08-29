@@ -16,7 +16,7 @@ See [tidb-docker-compose](https://github.com/pingcap/tidb-docker-compose) to lea
 - [x] Multi cluster.
 - [x] Web application.
 - [x] Cli tool.
-- [ ] Web ui.
+- [x] Web ui.
 - [ ] Fetch available image versions from docker hub.
 - [ ] Run in docker:dind.
 - [ ] ~~docker swarm support.~~
