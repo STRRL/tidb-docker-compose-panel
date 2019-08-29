@@ -26,3 +26,13 @@ jobs:
             docker build tidb-docker-compose-panel-web -t strrl/tidb-docker-compose-panel-web:beta;
             docker push strrl/tidb-docker-compose-panel-web:beta;
           fi ;
+    - stage: deply
+      deploy:
+        on:
+          tags: true
+        provider: releases
+        skip_cleanup: true
+        file:
+          - "tidb-docker-compose-panel-web/target/tidb-docker-compose-panel-web-*-exec.jar"
+          - "tidb-docker-compose-panel-cli/target/tidb-docker-compose-panel-cli-*-exec.jar"
+        file_glob: true
