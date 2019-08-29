@@ -44,10 +44,6 @@
             <groupId>com.github.strrl</groupId>
             <artifactId>tidb-docker-compose-panel-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.strrl</groupId>
-            <artifactId>tidb-docker-compose-panel-web-ui</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
