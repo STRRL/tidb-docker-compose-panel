@@ -1,5 +1,7 @@
 # tidb-docker-compose-panel
 
+![travis](https://img.shields.io/travis/STRRL/tidb-docker-compose-panel/master)
+
 :construction: Working in process.
 
 ## Introduction
