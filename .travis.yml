@@ -5,6 +5,8 @@ cache:
   directories:
     - "$HOME/.cache"
     - "$HOME/.m2"
+    - "tidb-docker-compose-panel-web-ui/node_modules"
+    - "tidb-docker-compose-panel-web-ui/node"
 jdk:
   - openjdk8
 stages:
